@@ -19,6 +19,7 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\Demo.Data\Demo.Data.csproj" />
     <ProjectReference Include="..\Demo.EF\Demo.EF.csproj" />
   </ItemGroup>
 

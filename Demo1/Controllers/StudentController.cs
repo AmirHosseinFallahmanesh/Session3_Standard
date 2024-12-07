@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Demo.Data;
 using Demo.EF;
 using Demo.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,15 +11,15 @@ namespace Demo1.Controllers
 {
     public class StudentController : Controller
     {
-        private readonly DemoContext context;
+        private readonly StudentRepository studentRepository;
 
-        public StudentController(DemoContext context)
+        public StudentController(StudentRepository studentRepository)
         {
-            this.context = context;
+            this.studentRepository = studentRepository;
         }
         public IActionResult Index()
         {
-            var student = context.Students.Where(a=>a.Active).ToList();
+            var student = studentRepository.GetAll();
             return View(student);
         }
 
@@ -31,25 +32,33 @@ namespace Demo1.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Student student)
         {
-            context.Students.Add(student);
-            context.SaveChanges();
+            studentRepository.Create(student);
             return RedirectToAction("index");
         }
 
 
         public IActionResult Edit(Guid id)
         {
-           Student student= context.Students.Find(id);
+          var student=  studentRepository.GetStudent(id);
 
             return View(student);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(Student student)
         {
-            context.Students.Update(student);
-            context.SaveChanges();
+            studentRepository.Update(student);
 
+            return RedirectToAction("index");
+        }
+
+        public IActionResult Delete(Guid id)
+        {
+
+          
+
+            studentRepository.Remove(id);
             return RedirectToAction("index");
         }
     }

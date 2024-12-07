@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Demo.Data;
 using Demo.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,6 +33,7 @@ namespace Demo1
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            services.AddScoped<StudentRepository>();
 
             services.AddDbContext<DemoContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("default")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
