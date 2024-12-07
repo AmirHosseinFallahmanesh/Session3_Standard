@@ -28,10 +28,28 @@ namespace Demo1.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(Student student)
         {
             context.Students.Add(student);
             context.SaveChanges();
+            return RedirectToAction("index");
+        }
+
+
+        public IActionResult Edit(Guid id)
+        {
+           Student student= context.Students.Find(id);
+
+            return View(student);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Student student)
+        {
+            context.Students.Update(student);
+            context.SaveChanges();
+
             return RedirectToAction("index");
         }
     }
